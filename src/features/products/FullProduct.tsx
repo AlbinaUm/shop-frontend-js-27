@@ -7,6 +7,7 @@ import Spinner from "../../components/UI/Spinner/Spinner.tsx";
 import {fetchProductById} from "./productsThunks.ts";
 import NotFoundPic from '../../assets/images/notFoundPic.jpg';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {apiUrl} from "../../../globalConstants.ts";
 
 
 const FullProduct = () => {
@@ -32,7 +33,7 @@ const FullProduct = () => {
                         <CardMedia
                             component="img"
                             height="200"
-                            image={NotFoundPic}
+                            image={product?.image ? apiUrl + '/' + product.image : NotFoundPic}
                             alt={product.title}
                         />
                         <CardContent>

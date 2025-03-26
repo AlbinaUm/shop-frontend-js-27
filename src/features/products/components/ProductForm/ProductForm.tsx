@@ -2,6 +2,7 @@ import {useState} from "react";
 import Grid from "@mui/material/Grid2";
 import {Button, TextField} from "@mui/material";
 import {ProductMutation} from "../../../../types";
+import FileInput from "../../../../components/UI/FileInput/FileInput.tsx";
 
 interface Props {
     onSubmitProduct: (product: ProductMutation) => void;
@@ -12,6 +13,7 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
         title: '',
         description: '',
         price: 0,
+        image: null,
     });
 
     const onSubmit = (e: React.FormEvent) => {
@@ -22,6 +24,17 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setForm({ ...form, [name]: value });
+    };
+
+    const fileInputChangeHandler = (eFile: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, files} = eFile.target;
+
+        if (files) {
+            setForm(prevState => ({
+                ...prevState,
+                [name]: files[0],
+            }));
+        }
     };
 
     return (
@@ -61,6 +74,14 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
                         value={form.description}
                         onChange={onInputChange}
                     />
+                </Grid>
+
+                <Grid size={{sm: 12, md: 6, lg: 6}}>
+                   <FileInput
+                       name='image'
+                       label='Image'
+                       onChange={fileInputChangeHandler}
+                   />
                 </Grid>
 
                 <Grid size={{sm: 12, md: 6, lg: 6}}>
