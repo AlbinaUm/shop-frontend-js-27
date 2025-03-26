@@ -9,6 +9,6 @@ export interface Product {
 export interface ProductMutation {
     title: string;
     description: string;
-    price: number;
+    price: number | string;
     image: File | null;
 }

@@ -23,20 +23,14 @@ export const createProduct = createAsyncThunk<void, ProductMutation>(
     'products/createProduct',
     async (productToAdd) => {
         const formData = new FormData();
-        // title: string;
-        // description: string;
-        // price: number;
-        // image: File | null;
+        const keys = Object.keys(productToAdd) as (keyof ProductMutation)[];
 
-
-        formData.append('title', productToAdd.title);
-        formData.append('description', productToAdd.description);
-        formData.append('price', String(productToAdd.price));
-
-        // !== null
-        if (productToAdd.image) {
-            formData.append('image', productToAdd.image);
-        }
+        keys.forEach(key => {
+            const value = productToAdd[key] as string;
+            if (value !== null) {
+                formData.append(key, value);
+            }
+        });
 
         await axiosAPI.post('/products', formData);
     }
