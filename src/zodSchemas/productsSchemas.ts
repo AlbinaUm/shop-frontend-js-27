@@ -1,6 +1,7 @@
 import {z} from "zod";
 
 export const productSchema = z.object({
+    category_id: z.number().refine(val => val > 0, {message: 'Expected number MORE THAN 0'}),
     title: z.string()
         .min(1, 'Title is required')
         .regex(/^[A-Za-z0-9\s]*$/, 'Title must contain only English letters'),

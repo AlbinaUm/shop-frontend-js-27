@@ -1,26 +1,38 @@
 import Grid from "@mui/material/Grid2";
-import {Button, TextField} from "@mui/material";
+import {Button, MenuItem, TextField} from "@mui/material";
 import {ProductMutation} from "../../../../types";
 import FileInput from "../../../../components/UI/FileInput/FileInput.tsx";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {productSchema} from "../../../../zodSchemas/productsSchemas.ts";
+import {useAppDispatch, useAppSelector} from "../../../../app/hooks.ts";
+import {useEffect} from "react";
+import {fetchAllCategories} from "../../../categories/categoriesThunks.ts";
+import {selectCategories, selectCategoriesLoading} from "../../../categories/categoriesSlice.ts";
 
 interface Props {
     onSubmitProduct: (product: ProductMutation) => void;
 }
 
 const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
+    const dispatch = useAppDispatch();
+    const categories = useAppSelector(selectCategories);
+    const categoriesLoading = useAppSelector(selectCategoriesLoading);
     const {register, handleSubmit, formState: {errors}, setValue} = useForm(
         {
             resolver: zodResolver(productSchema),
             defaultValues: {
+                category_id: 0,
                 title: '',
                 description: '',
                 price: '0',
                 image: null,
             }
         });
+
+    useEffect(() => {
+        dispatch(fetchAllCategories());
+    }, [dispatch])
 
     const onSubmit = (data: ProductMutation) => {
         onSubmitProduct({...data});
@@ -37,6 +49,24 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2} direction="column" alignItems="center">
+                <Grid size={{sm: 12, md: 6, lg: 6}}>
+                    <TextField
+                        select
+                        disabled={categoriesLoading}
+                        style={{width: '100%'}}
+                        id="category"
+                        label="Category"
+                        {...register("category_id")}
+                        error={!!errors.category_id}
+                        helperText={errors.category_id?.message}
+                    >
+                        <MenuItem value={0}>Select category</MenuItem>
+                        {categories.map(category => (
+                            <MenuItem value={category.id} key={category.id}>{category.title}</MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>
+
                 <Grid size={{sm: 12, md: 6, lg: 6}}>
                     <TextField
                         style={{width: '100%'}}
