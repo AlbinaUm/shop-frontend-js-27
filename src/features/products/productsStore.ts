@@ -7,7 +7,7 @@ interface ProductsState {
     item: Product | null;
     fetchLoading: boolean;
     createLoading: boolean;
-    fetchAllProducts: () => Promise<void>;
+    fetchAllProducts: (category_id?: string) => Promise<void>;
     fetchProductById: (product_id: string) => Promise<void>;
 }
 
@@ -17,11 +17,11 @@ export const useProductsStore = create<ProductsState>((set) => ({
     item: null,
     fetchLoading: false,
     createLoading: false,
-    fetchAllProducts: async () => {
+    fetchAllProducts: async (category_id) => {
         set({fetchLoading: true});
 
         try {
-            const response = await axiosAPI.get<Product[]>('/products');
+            const response = await axiosAPI.get<Product[]>(category_id ? '/products?category=' + category_id : '/products');
             set({items: response.data || []});
         } catch (e) {
             console.error(e);

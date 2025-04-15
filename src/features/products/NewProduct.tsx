@@ -16,6 +16,7 @@ const NewProduct = () => {
             toast.success("Product was successfully created!");
             navigate('/');
         } catch (e) {
+            toast.error("Product was not successfully created");
             console.error(e);
         }
     };

@@ -20,7 +20,8 @@ const App = () => {
           <Container maxWidth="xl">
               <Routes>
                   <Route path="/" element={<Products/>}/>
-                  <Route path="/products" element={<Products/>}/>
+                  <Route path="/:category_id" element={<Products/>}/>
+                  <Route path="/products/:category_id" element={<Products/>}/>
                   <Route path="/products/:id" element={<FullProduct/>}/>
                   <Route path="/products/new" element={<NewProduct/>}/>
                   <Route path="*" element={<Typography variant="h4">Not found page</Typography>}/>

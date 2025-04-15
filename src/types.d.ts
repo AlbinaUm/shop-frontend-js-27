@@ -1,5 +1,9 @@
 export interface Product {
-    id: string;
+    _id: string;
+    category: {
+        _id: string;
+        title: string;
+    };
     title: string;
     description: string;
     price: number;
@@ -7,14 +11,14 @@ export interface Product {
 }
 
 export interface Category {
-    id: string;
+    _id: string;
     title: string;
     description: string;
 }
 
 
 export interface ProductMutation {
-    category_id: number;
+    category: string;
     title: string;
     description: string;
     price: number | string;

@@ -22,7 +22,7 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
         {
             resolver: zodResolver(productSchema),
             defaultValues: {
-                category_id: 0,
+                category: '',
                 title: '',
                 description: '',
                 price: '0',
@@ -56,13 +56,13 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
                         style={{width: '100%'}}
                         id="category"
                         label="Category"
-                        {...register("category_id")}
-                        error={!!errors.category_id}
-                        helperText={errors.category_id?.message}
+                        {...register("category")}
+                        error={!!errors.category}
+                        helperText={errors.category?.message}
                     >
-                        <MenuItem value={0}>Select category</MenuItem>
+                        <MenuItem value='' disabled>Select category</MenuItem>
                         {categories.map(category => (
-                            <MenuItem value={category.id} key={category.id}>{category.title}</MenuItem>
+                            <MenuItem value={category._id} key={category._id}>{category.title}</MenuItem>
                         ))}
                     </TextField>
                 </Grid>
