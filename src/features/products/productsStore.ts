@@ -21,7 +21,7 @@ export const useProductsStore = create<ProductsState>((set) => ({
         set({fetchLoading: true});
 
         try {
-            const response = await axiosAPI.get<Product[]>(category_id ? '/products?category=' + category_id : '/products');
+            const response = await axiosAPI.get<Product[]>(category_id ? '/products' + category_id : '/products');
             set({items: response.data || []});
         } catch (e) {
             console.error(e);

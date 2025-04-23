@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid2";
 import {Button, Typography} from "@mui/material";
-import {Link, useParams} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {useEffect} from "react";
 import Spinner from "../../components/UI/Spinner/Spinner.tsx";
 import ProductItem from "./components/ProductItem/ProductItem.tsx";
@@ -14,13 +14,13 @@ const Products = () => {
     const dispatch = useAppDispatch();
     const categories = useAppSelector(selectCategories);
     const {items, fetchLoading, fetchAllProducts} = useProductsStore();
-    const {category_id} = useParams();
+    const {search} = useLocation();
 
 
     useEffect(() => {
-        void fetchAllProducts(category_id);
+        void fetchAllProducts(search);
         dispatch(fetchAllCategories());
-    }, [fetchAllProducts, dispatch, category_id])
+    }, [fetchAllProducts, dispatch, search])
 
     return (
         <Grid container direction="column" spacing={2}>
@@ -44,7 +44,7 @@ const Products = () => {
                             <ul>
                                 <li><Button variant="text" component={Link} to={`/`}>Все</Button></li>
                                 {categories.map(category => (
-                                    <li key={category._id}><Button variant="text" component={Link} to={`/${category._id}`}>{category.title}</Button></li>
+                                    <li key={category._id}><Button variant="text" component={Link} to={`?category=${category._id}`}>{category.title}</Button></li>
                                 ))}
                             </ul>
                             :
