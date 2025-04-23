@@ -4,6 +4,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {Link} from "react-router-dom";
 import {apiUrl} from "../../../../../globalConstants.ts";
 import NotFoundPic from "../../../../assets/images/notFoundPic.jpg";
+import EditIcon from '@mui/icons-material/Edit';
 
 
 interface Props {
@@ -46,6 +47,9 @@ const ProductItem: React.FC<Props> = ({title, price, category_title,  id, image}
                 <CardActions>
                     <IconButton component={Link} to={'/products/' + id}>
                         <ArrowForwardIcon/>
+                    </IconButton>
+                    <IconButton component={Link} to={'/products/' + id + '/edit'}>
+                        <EditIcon/>
                     </IconButton>
                 </CardActions>
             </Card>

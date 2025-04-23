@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 export const productSchema = z.object({
-    category: z.string().min(1, 'Category is required'),
+    category: z.string(),
     title: z.string().min(0),
     description: z.string().min(5, 'Description is required. The minimum symbols must be 5'),
     price: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)) && +val > 0, {

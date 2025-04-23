@@ -35,3 +35,23 @@ export const createProduct = createAsyncThunk<void, ProductMutation>(
         await axiosAPI.post('/products', formData);
     }
 );
+
+export const editProduct = createAsyncThunk<
+    void,
+    {productToEdit: ProductMutation, id: string}
+>(
+    'products/editProduct',
+    async ({productToEdit, id}) => {
+        const formData = new FormData();
+        const keys = Object.keys(productToEdit) as (keyof ProductMutation)[];
+
+        keys.forEach(key => {
+            const value = productToEdit[key] as string;
+            if (value !== null) {
+                formData.append(key, value);
+            }
+        });
+
+        await axiosAPI.patch('/products/' + id, formData);
+    }
+);

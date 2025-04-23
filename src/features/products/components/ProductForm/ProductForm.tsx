@@ -12,13 +12,15 @@ import {selectCategories, selectCategoriesLoading} from "../../../categories/cat
 
 interface Props {
     onSubmitProduct: (product: ProductMutation) => void;
+    productToEdit?: ProductMutation;
+    edit?: boolean;
 }
 
-const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
+const ProductForm: React.FC<Props> = ({onSubmitProduct, productToEdit, edit = false}) => {
     const dispatch = useAppDispatch();
     const categories = useAppSelector(selectCategories);
     const categoriesLoading = useAppSelector(selectCategoriesLoading);
-    const {register, handleSubmit, formState: {errors}, setValue} = useForm(
+    const {register, handleSubmit, formState: {errors}, setValue, reset, defa} = useForm(
         {
             resolver: zodResolver(productSchema),
             defaultValues: {
@@ -30,12 +32,25 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
             }
         });
 
+
     useEffect(() => {
         dispatch(fetchAllCategories());
-    }, [dispatch])
+
+        console.log(productToEdit)
+        if (productToEdit) {
+            reset({
+                category: productToEdit.category,
+                title: productToEdit.title,
+                description: productToEdit.description || '',
+                price: productToEdit.price || '0',
+                image: null,
+            })
+        }
+    }, [dispatch, productToEdit, setValue])
 
     const onSubmit = (data: ProductMutation) => {
-        onSubmitProduct({...data});
+        console.log(data);
+        // onSubmitProduct({...data});
     };
 
     const fileInputChangeHandler = (eFile: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +61,7 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
         }
     };
 
-    return (
+    return categories && (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2} direction="column" alignItems="center">
                 <Grid size={{sm: 12, md: 6, lg: 6}}>
@@ -60,7 +75,7 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
                         error={!!errors.category}
                         helperText={errors.category?.message}
                     >
-                        <MenuItem value='' disabled>Select category</MenuItem>
+                        <MenuItem defaultValue='' disabled>Select category</MenuItem>
                         {categories.map(category => (
                             <MenuItem value={category._id} key={category._id}>{category.title}</MenuItem>
                         ))}
@@ -114,7 +129,7 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct}) => {
 
                 <Grid size={{sm: 12, md: 6, lg: 6}}>
                     <Button style={{width: '100%'}} type="submit" color="primary" variant="contained">
-                        Create
+                        {edit ? 'Edit' : 'Create'}
                     </Button>
                 </Grid>
             </Grid>

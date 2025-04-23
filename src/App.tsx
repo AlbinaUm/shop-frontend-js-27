@@ -6,6 +6,7 @@ import {ToastContainer} from "react-toastify";
 import NewProduct from "./features/products/NewProduct.tsx";
 import FullProduct from "./features/products/FullProduct.tsx";
 import Register from "./features/users/Register.tsx";
+import EditProduct from "./features/products/EditProduct.tsx";
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
                   <Route path="/" element={<Products/>}/>
                   <Route path="/register" element={<Register/>}/>
                   <Route path="/products/:id" element={<FullProduct/>}/>
+                  <Route path="/products/:product_id/edit" element={<EditProduct/>}/>
                   <Route path="/products/new" element={<NewProduct/>}/>
                   <Route path="*" element={<Typography variant="h4">Not found page</Typography>}/>
               </Routes>
