@@ -1,8 +1,8 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {selectOneProduct, selectProductsLoading} from "./productsSlice.ts";
+import {selectOneProduct} from "./productsSlice.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
-import {createProduct, fetchProductById} from "./productsThunks.ts";
+import {editProduct, fetchProductById} from "./productsThunks.ts";
 import {Container, Typography} from "@mui/material";
 import ProductForm from "./components/ProductForm/ProductForm.tsx";
 import {ProductMutation} from "../../types";
@@ -12,7 +12,6 @@ import {toast} from "react-toastify";
 const EditProduct = () => {
     const dispatch = useAppDispatch();
     const product = useAppSelector(selectOneProduct);
-    const fetchLoading = useAppSelector(selectProductsLoading);
     const navigate = useNavigate();
     const {product_id} = useParams();
 
@@ -26,9 +25,11 @@ const EditProduct = () => {
 
     const onEditProduct = async (product: ProductMutation) => {
         try {
-            await dispatch(createProduct(product)).unwrap();
-            toast.success("Product was successfully edited.!");
-            navigate('/');
+            if (product_id) {
+                await dispatch(editProduct({productToEdit: product, id: product_id})).unwrap();
+                toast.success("Product was successfully edited.!");
+                navigate('/');
+            }
         } catch (e) {
             toast.error("Product was not successfully edited");
             console.error(e);
@@ -40,7 +41,7 @@ const EditProduct = () => {
             <Typography variant="h4" sx={{textAlign: "center"}}>
                 <strong>Edit product</strong>
             </Typography>
-            <ProductForm onSubmitProduct={onEditProduct} productToEdit={product} />
+            <ProductForm onSubmitProduct={onEditProduct} productToEdit={product} edit/>
         </Container>
     );
 };

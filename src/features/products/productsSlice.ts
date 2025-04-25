@@ -1,11 +1,11 @@
-import {Product} from "../../types";
+import {Product, ProductMutation} from "../../types";
 import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store.ts";
 import {createProduct, editProduct, fetchAllProducts, fetchProductById} from "./productsThunks.ts";
 
 interface ProductsState {
     items: Product[];
-    item: Product | null;
+    item: ProductMutation | null;
     fetchLoading: boolean;
     createLoading: boolean;
     editLoading: boolean;

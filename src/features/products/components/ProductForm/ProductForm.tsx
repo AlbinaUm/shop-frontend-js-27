@@ -12,7 +12,7 @@ import {selectCategories, selectCategoriesLoading} from "../../../categories/cat
 
 interface Props {
     onSubmitProduct: (product: ProductMutation) => void;
-    productToEdit?: ProductMutation;
+    productToEdit?: ProductMutation | null;
     edit?: boolean;
 }
 
@@ -20,7 +20,7 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct, productToEdit, edit = fa
     const dispatch = useAppDispatch();
     const categories = useAppSelector(selectCategories);
     const categoriesLoading = useAppSelector(selectCategoriesLoading);
-    const {register, handleSubmit, formState: {errors}, setValue, reset, defa} = useForm(
+    const {register, handleSubmit, formState: {errors}, setValue, reset, watch} = useForm(
         {
             resolver: zodResolver(productSchema),
             defaultValues: {
@@ -42,15 +42,14 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct, productToEdit, edit = fa
                 category: productToEdit.category,
                 title: productToEdit.title,
                 description: productToEdit.description || '',
-                price: productToEdit.price || '0',
+                price: String(productToEdit.price)|| '0',
                 image: null,
             })
         }
     }, [dispatch, productToEdit, setValue])
 
     const onSubmit = (data: ProductMutation) => {
-        console.log(data);
-        // onSubmitProduct({...data});
+        onSubmitProduct({...data});
     };
 
     const fileInputChangeHandler = (eFile: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +72,7 @@ const ProductForm: React.FC<Props> = ({onSubmitProduct, productToEdit, edit = fa
                         label="Category"
                         {...register("category")}
                         error={!!errors.category}
+                        value={watch('category')}
                         helperText={errors.category?.message}
                     >
                         <MenuItem defaultValue='' disabled>Select category</MenuItem>

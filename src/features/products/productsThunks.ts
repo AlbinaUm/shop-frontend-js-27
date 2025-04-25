@@ -10,10 +10,10 @@ export const fetchAllProducts = createAsyncThunk<Product[], void>(
     }
 );
 
-export const fetchProductById = createAsyncThunk<Product, string>(
+export const fetchProductById = createAsyncThunk<ProductMutation, string>(
     'products/fetchProductById',
     async (product_id) => {
-        const response = await axiosAPI.get<Product>('/products/' + product_id);
+        const response = await axiosAPI.get<ProductMutation>('/products/' + product_id);
         return response.data || null;
     }
 );
@@ -43,6 +43,11 @@ export const editProduct = createAsyncThunk<
     'products/editProduct',
     async ({productToEdit, id}) => {
         const formData = new FormData();
+
+        if (productToEdit.image === null) {
+            delete productToEdit.image;
+        }
+
         const keys = Object.keys(productToEdit) as (keyof ProductMutation)[];
 
         keys.forEach(key => {

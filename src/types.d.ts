@@ -22,7 +22,7 @@ export interface ProductMutation {
     title: string;
     description: string;
     price: number | string;
-    image: File | null;
+    image?: File | null;
 }
 
 export interface RegisterMutation {
