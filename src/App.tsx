@@ -7,6 +7,7 @@ import NewProduct from "./features/products/NewProduct.tsx";
 import FullProduct from "./features/products/FullProduct.tsx";
 import Register from "./features/users/Register.tsx";
 import EditProduct from "./features/products/EditProduct.tsx";
+import Login from "./features/users/Login.tsx";
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
               <Routes>
                   <Route path="/" element={<Products/>}/>
                   <Route path="/register" element={<Register/>}/>
+                  <Route path="/login" element={<Login/>}/>
                   <Route path="/products/:id" element={<FullProduct/>}/>
                   <Route path="/products/:product_id/edit" element={<EditProduct/>}/>
                   <Route path="/products/new" element={<NewProduct/>}/>
