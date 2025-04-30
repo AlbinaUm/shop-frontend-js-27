@@ -8,10 +8,12 @@ import {useProductsStore} from "./productsStore.ts";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {fetchAllCategories} from "../categories/categoriesThunks.ts";
 import {selectCategories} from "../categories/categoriesSlice.ts";
+import {selectUser} from "../users/usersSlice.ts";
 
 
 const Products = () => {
     const dispatch = useAppDispatch();
+    const user = useAppSelector(selectUser);
     const categories = useAppSelector(selectCategories);
     const {items, fetchLoading, fetchAllProducts} = useProductsStore();
     const {search} = useLocation();
@@ -31,9 +33,14 @@ const Products = () => {
                     </Typography>
                 </Grid>
                 <Grid>
-                    <Button color="primary" component={Link} to='/products/new'>
-                        Add product
-                    </Button>
+                    {user && user.token ?
+                        <Button color="primary" component={Link} to='/products/new'>
+                            Add product
+                        </Button>
+                        :
+                        ''
+                    }
+
                 </Grid>
             </Grid>
             {fetchLoading ? <Spinner/> :

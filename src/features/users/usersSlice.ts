@@ -8,7 +8,7 @@ interface UsersState {
     registerLoading: boolean;
     registerError: ValidationError | null;
     loginLoading: boolean;
-    loginError:  GlobalError | null;
+    loginError: GlobalError | null;
 }
 
 const initialState: UsersState = {
@@ -16,7 +16,7 @@ const initialState: UsersState = {
     registerLoading: false,
     registerError: null,
     loginLoading: false,
-    loginError:  null,
+    loginError: null,
 }
 
 export const selectUser = (state: RootState) => state.users.user;
@@ -28,7 +28,11 @@ export const selectLoginError = (state: RootState) => state.users.loginError;
 export const usersSlice = createSlice({
     name: "users",
     initialState,
-    reducers: {},
+    reducers: {
+        unsetUser: (state) => {
+            state.user = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(register.pending, (state) => {
@@ -60,3 +64,4 @@ export const usersSlice = createSlice({
 });
 
 export const usersReducer = usersSlice.reducer;
+export const {unsetUser} = usersSlice.actions;
