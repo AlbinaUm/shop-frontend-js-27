@@ -48,12 +48,13 @@ export const login = createAsyncThunk<
     }
 )
 
+// мы передавали токен
 export const logout = createAsyncThunk<
     void,
     void
 >(
     'users/logout',
     async () => {
-        await axiosApi.delete('users/sessions');
+        await axiosApi.delete('users/sessions', {withCredentials: true});
     }
 )

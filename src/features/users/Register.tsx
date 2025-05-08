@@ -11,6 +11,7 @@ import {RegisterMutation} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {selectRegisterError, selectRegisterLoading} from "./usersSlice.ts";
 import {register} from "./usersThunks.ts";
+import {toast} from "react-toastify";
 
 
 const Register = () => {
@@ -21,6 +22,7 @@ const Register = () => {
     const [form, setForm] = useState<RegisterMutation>({
         username: '',
         password: '',
+        confirmPassword: '',
     });
 
 
@@ -42,6 +44,7 @@ const Register = () => {
         try {
             await dispatch(register(form)).unwrap();
             navigate("/");
+            toast.success("Registration successful");
         } catch(error) {
             console.error(error);
         }
@@ -91,6 +94,22 @@ const Register = () => {
                             onChange={onInputChange}
                             helperText={getFieldError('password')}
                             error={Boolean(getFieldError('password'))}
+                        />
+                    </Grid>
+
+                    <Grid size={{xs: 12}}>
+                        <TextField
+                            disabled={registerLoading}
+                            fullWidth
+                            name="confirmPassword"
+                            label="Confirm password"
+                            type="password"
+                            id="confirmPassword"
+                            autoComplete="new-password"
+                            value={form.confirmPassword}
+                            onChange={onInputChange}
+                            helperText={getFieldError('confirmPassword')}
+                            error={Boolean(getFieldError('confirmPassword'))}
                         />
                     </Grid>
                 </Grid>

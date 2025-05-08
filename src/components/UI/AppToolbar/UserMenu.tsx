@@ -46,7 +46,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
             >
                 {user && user.role === 'admin' &&
                     <MenuItem>
-                        <Button component={NavLink} to='/products/new' onClick={handleClose}>Add product</Button>
+                        <Button component={NavLink} to='/admin' onClick={handleClose}>Admin</Button>
                     </MenuItem>
                 }
                 <MenuItem>My account</MenuItem>

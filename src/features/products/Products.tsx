@@ -34,7 +34,7 @@ const Products = () => {
                 </Grid>
                 <Grid>
                     {user && user.role === 'admin' ?
-                        <Button color="primary" component={Link} to='/products/new'>
+                        <Button color="primary" component={Link} to='/admin/products/new'>
                             Add product
                         </Button>
                         :

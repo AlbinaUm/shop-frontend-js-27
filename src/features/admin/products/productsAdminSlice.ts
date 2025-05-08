@@ -32,9 +32,8 @@ export const productAdminSlice = createSlice({
                 state.items = products;
                 state.fetchLoading = false;
             })
-
-            .addCase(fetchAdminAllProducts.pending, (state) => {
-                state.fetchLoading = true;
+            .addCase(fetchAdminAllProducts.rejected, (state) => {
+                state.fetchLoading = false;
             })
 
             .addCase(createAdminProduct.pending, (state) => {

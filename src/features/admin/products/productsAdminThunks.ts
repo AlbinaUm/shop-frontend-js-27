@@ -6,7 +6,7 @@ import {Product, ProductMutation} from "../../../types";
 export const fetchAdminAllProducts = createAsyncThunk<Product[], void>(
     'admin/fetchAdminAllProducts',
     async () => {
-        const response = await axiosAPI.get<Product[]>('/admin/products');
+        const response = await axiosAPI.get<Product[]>('/admin/products', {withCredentials: true});
         return response.data;
     }
 );
@@ -24,7 +24,7 @@ export const createAdminProduct = createAsyncThunk<void, ProductMutation>(
             }
         });
 
-        await axiosAPI.post('/admin/products', formData);
+        await axiosAPI.post('/admin/products', formData, {withCredentials: true});
     }
 );
 
@@ -49,6 +49,6 @@ export const editAdminProduct = createAsyncThunk<
             }
         });
 
-        await axiosAPI.patch('/admin/products/' + id, formData);
+        await axiosAPI.patch('/admin/products/' + id, formData, {withCredentials: true});
     }
 );
