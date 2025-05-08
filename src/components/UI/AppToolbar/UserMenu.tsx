@@ -44,9 +44,11 @@ const UserMenu: React.FC<Props> = ({user}) => {
                 open={Boolean(userOptionsEl)}
                 onClose={handleClose}
             >
-                <MenuItem>
-                    <Button component={NavLink} to='/products/new' onClick={handleClose}>Add product</Button>
-                </MenuItem>
+                {user && user.role === 'admin' &&
+                    <MenuItem>
+                        <Button component={NavLink} to='/products/new' onClick={handleClose}>Add product</Button>
+                    </MenuItem>
+                }
                 <MenuItem>My account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>

@@ -33,7 +33,7 @@ const Products = () => {
                     </Typography>
                 </Grid>
                 <Grid>
-                    {user && user.token ?
+                    {user && user.role === 'admin' ?
                         <Button color="primary" component={Link} to='/products/new'>
                             Add product
                         </Button>

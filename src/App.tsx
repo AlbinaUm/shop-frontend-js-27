@@ -11,6 +11,9 @@ import Login from "./features/users/Login.tsx";
 import ProtectedRoute from "./components/UI/ProtectedRoute/ProtectedRoute.tsx";
 import {useAppSelector} from "./app/hooks.ts";
 import {selectUser} from "./features/users/usersSlice.ts";
+import AdminLayout from "./features/admin/AdminLayout.tsx";
+import AdminProductsList from "./features/admin/products/AdminProductsList.tsx";
+import AdminCategoriesList from "./features/admin/categories/AdminCategoriesList.tsx";
 
 
 const App = () => {
@@ -29,18 +32,22 @@ const App = () => {
                         <Route path="/" element={<Products/>}/>
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/login" element={<Login/>}/>
-                        <Route path="/products/:id" element={<FullProduct/>}/>
 
-                        <Route path="/products/:product_id/edit" element={
-                            <ProtectedRoute isAllowed={Boolean(user)}>
-                                <EditProduct/>
+
+                        <Route path='admin' element={
+                            <ProtectedRoute isAllowed={user && user.role === 'admin'}>
+                                <AdminLayout/>
                             </ProtectedRoute>
-                        }/>
+                        }>
+                            <Route path='' element={''}/>
+                            <Route path='products' element={<AdminProductsList/>}/>
+                            <Route path='categories' element={<AdminCategoriesList/>}/>
+                            <Route path="products/:product_id/edit" element={<EditProduct/>}/>
+                            <Route path='products/new' element={<NewProduct/>}/>
+                        </Route>
 
-                        <Route path="/products/new" element={
-                            <ProtectedRoute isAllowed={Boolean(user)}><NewProduct/></ProtectedRoute>
-                        }/>
 
+                        <Route path="/products/:id" element={<FullProduct/>}/>
                         <Route path="*" element={<Typography variant="h4">Not found page</Typography>}/>
                     </Routes>
                 </Container>

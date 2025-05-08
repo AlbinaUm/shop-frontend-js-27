@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage'
 import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore, } from "redux-persist";
 import {AxiosHeaders, InternalAxiosRequestConfig} from "axios";
 import axiosAPI from "../axiosApi.ts";
+import {adminProductsReducer} from "../features/admin/products/productsAdminSlice.ts";
 
 
 const usersPersistConfig = {
@@ -17,6 +18,7 @@ const usersPersistConfig = {
 const rootReducer = combineReducers({
     products: productsReducer,
     categories: categoriesReducer,
+    adminProduct: adminProductsReducer,
     users:  persistReducer(usersPersistConfig, usersReducer),
 });
 
