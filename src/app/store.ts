@@ -10,7 +10,7 @@ import {adminProductsReducer} from "../features/admin/products/productsAdminSlic
 const usersPersistConfig = {
     key: 'store:users',
     storage,
-    whitelist: ['user']
+    whitelist: ['user', 'accessToken'],
 };
 
 const rootReducer = combineReducers({

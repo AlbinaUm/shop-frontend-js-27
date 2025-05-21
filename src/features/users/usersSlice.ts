@@ -5,6 +5,7 @@ import {facebookLogin, fetchUserDataByOAuth, googleLogin, login, register} from 
 
 interface UsersState {
     user: User | null;
+    accessToken: string | null;
     registerLoading: boolean;
     registerError: ValidationError | null;
     loginLoading: boolean;
@@ -13,6 +14,7 @@ interface UsersState {
 
 const initialState: UsersState = {
     user: null,
+    accessToken: null,
     registerLoading: false,
     registerError: null,
     loginLoading: false,
@@ -31,6 +33,9 @@ export const usersSlice = createSlice({
     reducers: {
         unsetUser: (state) => {
             state.user = null;
+        },
+        setAccessToken: (state, {payload}) => {
+            state.accessToken = payload;
         }
     },
     extraReducers: (builder) => {
@@ -41,6 +46,7 @@ export const usersSlice = createSlice({
             })
             .addCase(register.fulfilled, (state, {payload}) => {
                 state.user = payload.user;
+                state.accessToken = payload.accessToken;
                 state.registerLoading = false;
             })
             .addCase(register.rejected, (state, {payload: error}) => {
@@ -52,8 +58,9 @@ export const usersSlice = createSlice({
                 state.loginLoading = true;
                 state.loginError = null;
             })
-            .addCase(login.fulfilled, (state, {payload: user}) => {
-                state.user = user;
+            .addCase(login.fulfilled, (state, {payload}) => {
+                state.user = payload.user;
+                state.accessToken = payload.accessToken;
                 state.loginLoading = false;
             })
             .addCase(login.rejected, (state, {payload: error}) => {
@@ -65,8 +72,9 @@ export const usersSlice = createSlice({
                 state.loginLoading = true;
                 state.loginError = null;
             })
-            .addCase(googleLogin.fulfilled, (state, {payload: user}) => {
-                state.user = user;
+            .addCase(googleLogin.fulfilled, (state, {payload}) => {
+                state.user = payload.user;
+                state.accessToken = payload.accessToken;
                 state.loginLoading = false;
             })
             .addCase(googleLogin.rejected, (state, {payload: error}) => {
@@ -78,8 +86,9 @@ export const usersSlice = createSlice({
                 state.loginLoading = true;
                 state.loginError = null;
             })
-            .addCase(facebookLogin.fulfilled, (state, {payload: user}) => {
-                state.user = user;
+            .addCase(facebookLogin.fulfilled, (state, {payload}) => {
+                state.user = payload.user;
+                state.accessToken = payload.accessToken;
                 state.loginLoading = false;
             })
             .addCase(facebookLogin.rejected, (state, {payload: error}) => {
@@ -91,8 +100,9 @@ export const usersSlice = createSlice({
                 state.loginLoading = true;
                 state.loginError = null;
             })
-            .addCase(fetchUserDataByOAuth.fulfilled, (state, {payload: user}) => {
-                state.user = user;
+            .addCase(fetchUserDataByOAuth.fulfilled, (state, {payload}) => {
+                state.user = payload.user;
+                state.accessToken = payload.accessToken;
                 state.loginLoading = false;
             })
             .addCase(fetchUserDataByOAuth.rejected, (state, {payload: error}) => {
@@ -105,4 +115,4 @@ export const usersSlice = createSlice({
 });
 
 export const usersReducer = usersSlice.reducer;
-export const {unsetUser} = usersSlice.actions;
+export const {unsetUser, setAccessToken} = usersSlice.actions;

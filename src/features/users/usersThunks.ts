@@ -6,6 +6,7 @@ import {isAxiosError} from "axios";
 export interface RegisterAndLoginResponse {
     user: User;
     message: string;
+    accessToken: string;
 }
 
 export const register = createAsyncThunk<
@@ -29,7 +30,7 @@ export const register = createAsyncThunk<
 );
 
 export const login = createAsyncThunk<
-    User,
+    RegisterAndLoginResponse,
     LoginMutation,
     { rejectValue: GlobalError}
 >(
@@ -37,7 +38,7 @@ export const login = createAsyncThunk<
     async (loginForm, {rejectWithValue}) => {
         try {
             const response = await axiosApi.post<RegisterAndLoginResponse>('/users/sessions', loginForm);
-            return response.data.user;
+            return response.data;
         } catch (error) {
             if (isAxiosError(error) && error.response && error.response.status === 400) {
                 return rejectWithValue(error.response.data);
@@ -49,7 +50,7 @@ export const login = createAsyncThunk<
 )
 
 export const googleLogin = createAsyncThunk<
-    User,
+    RegisterAndLoginResponse,
     string,
     { rejectValue: GlobalError}
 >(
@@ -57,7 +58,7 @@ export const googleLogin = createAsyncThunk<
     async (credential, {rejectWithValue}) => {
         try {
             const response = await axiosApi.post<RegisterAndLoginResponse>('/users/google', {credential});
-            return response.data.user;
+            return response.data;
         } catch (error) {
             if (isAxiosError(error) && error.response && error.response.status === 400) {
                 return rejectWithValue(error.response.data);
@@ -69,7 +70,7 @@ export const googleLogin = createAsyncThunk<
 )
 
 export const facebookLogin = createAsyncThunk<
-    User,
+    RegisterAndLoginResponse,
     {userID: string, accessToken: string},
     { rejectValue: GlobalError}
 >(
@@ -77,7 +78,7 @@ export const facebookLogin = createAsyncThunk<
     async ({userID, accessToken}, {rejectWithValue}) => {
         try {
             const response = await axiosApi.post<RegisterAndLoginResponse>('/users/facebook', {userID, accessToken});
-            return response.data.user;
+            return response.data;
         } catch (error) {
             if (isAxiosError(error) && error.response && error.response.status === 400) {
                 return rejectWithValue(error.response.data);
@@ -89,7 +90,7 @@ export const facebookLogin = createAsyncThunk<
 )
 
 export const fetchUserDataByOAuth = createAsyncThunk<
-    User,
+    RegisterAndLoginResponse,
     void,
     { rejectValue: GlobalError}
 >(
@@ -97,7 +98,7 @@ export const fetchUserDataByOAuth = createAsyncThunk<
     async (_, {rejectWithValue}) => {
         try {
             const response =  await axiosApi.post<RegisterAndLoginResponse>('/users/secret');
-            return response.data.user;
+            return response.data;
         } catch (error) {
             if (isAxiosError(error) && error.response && error.response.status === 400) {
                 return rejectWithValue(error.response.data);
