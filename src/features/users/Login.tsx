@@ -10,9 +10,11 @@ import {Alert, Button, TextField} from "@mui/material";
 import {LoginMutation} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {selectLoginError, selectLoginLoading} from "./usersSlice.ts";
-import {googleLogin, login} from "./usersThunks.ts";
+import {facebookLogin, googleLogin, login} from "./usersThunks.ts";
 import {toast} from "react-toastify";
 import {GoogleLogin} from "@react-oauth/google";
+import FacebookLogin from "@greatsumini/react-facebook-login";
+import {FACEBOOK_APP_ID} from "../../../globalConstants.ts";
 
 
 const Login = () => {
@@ -44,7 +46,15 @@ const Login = () => {
     const googleLoginHandler =  async (credential: string) => {
         await dispatch(googleLogin(credential)).unwrap();
         navigate('/');
+        toast.success("Google facebook successful");
     };
+
+    const facebookLoginHandler =  async (userID: string, accessToken: string) => {
+        await dispatch(facebookLogin({userID, accessToken})).unwrap();
+        navigate('/');
+        toast.success("Login facebook successful");
+    };
+
 
     return (
         <Box
@@ -81,6 +91,23 @@ const Login = () => {
                 />
             </Box>
 
+            <Box>
+                <Button
+                    onClick={() => {
+                        window.location.href=`https://github.com/login/oauth/authorize?client_id=Ov23liWcvgPgetctZVrq`
+                    }}
+                >
+                    Github login
+                </Button>
+            </Box>
+
+            <Box sx={{pt: 2}}>
+                <FacebookLogin
+                    appId={FACEBOOK_APP_ID}
+                    onSuccess={response => facebookLoginHandler(response.userID, response.accessToken)}
+                    onFail={() => alert('Facebook Login failed')}
+                />
+            </Box>
 
             <Box component="form" noValidate onSubmit={onSubmitFormHandler} sx={{mt: 3}}>
                 <Grid container spacing={2}>

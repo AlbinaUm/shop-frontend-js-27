@@ -68,6 +68,46 @@ export const googleLogin = createAsyncThunk<
     }
 )
 
+export const facebookLogin = createAsyncThunk<
+    User,
+    {userID: string, accessToken: string},
+    { rejectValue: GlobalError}
+>(
+    'users/facebookLogin',
+    async ({userID, accessToken}, {rejectWithValue}) => {
+        try {
+            const response = await axiosApi.post<RegisterAndLoginResponse>('/users/facebook', {userID, accessToken});
+            return response.data.user;
+        } catch (error) {
+            if (isAxiosError(error) && error.response && error.response.status === 400) {
+                return rejectWithValue(error.response.data);
+            }
+
+            throw error;
+        }
+    }
+)
+
+export const fetchUserDataByOAuth = createAsyncThunk<
+    User,
+    void,
+    { rejectValue: GlobalError}
+>(
+    'users/fetchUserDataByOAuth',
+    async (_, {rejectWithValue}) => {
+        try {
+            const response =  await axiosApi.post<RegisterAndLoginResponse>('/users/secret');
+            return response.data.user;
+        } catch (error) {
+            if (isAxiosError(error) && error.response && error.response.status === 400) {
+                return rejectWithValue(error.response.data);
+            }
+
+            throw error;
+        }
+    }
+)
+
 
 // мы передавали токен
 export const logout = createAsyncThunk<

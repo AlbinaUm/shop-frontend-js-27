@@ -14,6 +14,7 @@ import {selectUser} from "./features/users/usersSlice.ts";
 import AdminLayout from "./features/admin/AdminLayout.tsx";
 import AdminProductsList from "./features/admin/products/AdminProductsList.tsx";
 import AdminCategoriesList from "./features/admin/categories/AdminCategoriesList.tsx";
+import OAuthSuccess from "./features/users/OAuthSuccess.tsx";
 
 
 const App = () => {
@@ -32,7 +33,7 @@ const App = () => {
                         <Route path="/" element={<Products/>}/>
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/login" element={<Login/>}/>
-
+                        <Route path="/oauth-success" element={<OAuthSuccess/>}/>
 
                         <Route path='admin' element={
                             <ProtectedRoute isAllowed={user && user.role === 'admin'}>
