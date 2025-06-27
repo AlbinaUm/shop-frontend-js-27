@@ -26,14 +26,14 @@ export interface ProductMutation {
 }
 
 export interface RegisterMutation {
-    username: string;
+    email: string;
     password: string;
     confirmPassword: string;
 }
 
 export interface User {
     _id: string;
-    username: string;
+    email: string;
     token: string;
     role: string;
 }
@@ -51,7 +51,7 @@ export interface ValidationError {
 }
 
 export interface LoginMutation {
-    username: string;
+    email: string;
     password: string;
 }
 

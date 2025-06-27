@@ -13,14 +13,16 @@ import {selectRegisterError, selectRegisterLoading} from "./usersSlice.ts";
 import {register} from "./usersThunks.ts";
 import {toast} from "react-toastify";
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Register = () => {
     const dispatch = useAppDispatch();
     const error = useAppSelector(selectRegisterError);
     const registerLoading = useAppSelector(selectRegisterLoading);
     const navigate = useNavigate();
+    const [errors, setErrors] = useState<{email?: string}>({});
     const [form, setForm] = useState<RegisterMutation>({
-        username: '',
+        email: '',
         password: '',
         confirmPassword: '',
     });
@@ -36,6 +38,21 @@ const Register = () => {
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const {name, value} = e.target;
+
+      if (name === 'email') {
+          if (!emailRegex.test(value)) {
+              setErrors(prevState => ({
+                  ...prevState,
+                  email: 'Invalid email format',
+              }));
+          } else {
+              setErrors(prevState => ({
+                  ...prevState,
+                  email: '',
+              }));
+          }
+      }
+
       setForm({ ...form, [name]: value });
     };
 
@@ -46,7 +63,7 @@ const Register = () => {
             navigate("/");
             toast.success("Registration successful");
         } catch(error) {
-            console.error(error);
+
         }
     };
 
@@ -71,14 +88,14 @@ const Register = () => {
                         <TextField
                             disabled={registerLoading}
                             fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
+                            id="email"
+                            label="Email"
+                            name="email"
                             autoComplete="family-name"
-                            value={form.username}
+                            value={form.email}
                             onChange={onInputChange}
-                            helperText={getFieldError('username')}
-                            error={Boolean(getFieldError('username'))}
+                            helperText={getFieldError('email') || errors.email ? errors.email : ''}
+                            error={Boolean(getFieldError('email')) || Boolean(errors.email)}
                         />
                     </Grid>
                     <Grid size={{xs: 12}}>

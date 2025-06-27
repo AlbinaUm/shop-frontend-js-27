@@ -14,21 +14,20 @@ axiosAPI.interceptors.request.use(config => {
 
 
 axiosAPI.interceptors.response.use(response => response, async error => {
-    const originalRequest = error.config;
-    console.log(originalRequest)
-
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 401) {
+        const originalRequest = error.config;
         originalRequest._retry = true;
 
-        console.log(originalRequest);
-
-        try {
-            const res = await axiosAPI.post('/users/refresh-token');
-            const newToken = res.data.accessToken;
-            store.dispatch(setAccessToken(newToken));
-        } catch (e) {
-            store.dispatch(unsetUser());
-            return Promise.reject(e);
+        if (!originalRequest._retry) {
+            try {
+                const res = await axiosAPI.post('/users/refresh-token');
+                const newToken = res.data.accessToken;
+                store.dispatch(setAccessToken(newToken));
+            } catch (e) {
+                store.dispatch(unsetUser());
+                return Promise.reject(e);
+            }
         }
     }
+    return Promise.reject(error);
 });

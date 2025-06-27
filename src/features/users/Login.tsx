@@ -23,7 +23,7 @@ const Login = () => {
     const loginLoading = useAppSelector(selectLoginLoading);
     const navigate = useNavigate();
     const [form, setForm] = useState<LoginMutation>({
-        username: '',
+        email: '',
         password: '',
     });
 
@@ -115,11 +115,11 @@ const Login = () => {
                         <TextField
                             disabled={loginLoading}
                             fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
+                            id="email"
+                            label="Email"
+                            name="email"
                             autoComplete="family-name"
-                            value={form.username}
+                            value={form.email}
                             onChange={onInputChange}
                             error={Boolean(error)}
                         />
